@@ -199,25 +199,35 @@
 		}
 
 		console.log(PeterScore + ":" + VaciliScore);
+
 	};
 		let getWinner = whoIsWinner();
 		
   		
   		
 		
-		window.addEventListener("click", function() { 
-			document.body.children[0].textContent = 'Suit --' + trump+'   '+ 'Winner --' + PeterScore + ":" + VaciliScore;
-			getWinner.next();
-
+		window.addEventListener("click", addToBrowser);
+		function addToBrowser() { 
+			
+			document.body.children[0].textContent = 'Suit --' + trump+'   '+ 'Winner --' + 'Peter ' + PeterScore +  ":" + ' Vacili '+ VaciliScore;
+			
+			
 
 
 			
-			var tbody = document.getElementById('myTable').getElementsByTagName("TBODY")[0];
-    		var row = document.createElement("TR")
-    		var td1 = document.createElement("TD")
-    		td1.appendChild(document.createTextNode(PeterCardName))
-    		var td2 = document.createElement("TD")
-    		td2.appendChild (document.createTextNode(VaciliCardName))
+			let tbody = document.getElementById('myTable').getElementsByTagName("TBODY")[0];
+    		let row = document.createElement("TR");
+    		let td1 = document.createElement("TD");
+    		td1.appendChild(document.createTextNode(PeterCardName));
+    		let td2 = document.createElement("TD");
+    		td2.appendChild (document.createTextNode(VaciliCardName));
+
+
+    		if(getWinner.next().done){
+			window.removeEventListener("click", addToBrowser);
+			};
+
+
     		row.appendChild(td1);
     		row.appendChild(td2);
     		tbody.appendChild(row);
@@ -225,46 +235,15 @@
     		
 
 
-		})
+		}
+
+		
 		
 	
 
 	
 
 
-		//var n=2;
-
-/*var i=1;
-
-document.write("<table border=1>");
-
-while (i <= n){
-
-    document.write('<tr>');
-
-    var j=1;
-
-    while(j <= n){
-
-        document.write('<td>');
-
-        document.write(i*j);
-
-        document.write("</td>");
-
-        j++;
-
-    }
-
-    document.write("</tr>");
-
-    i++;
-
-}
-
-document.write("</table>");
-
-
-*/
+		
 
 }());
