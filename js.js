@@ -2,7 +2,7 @@
 	
 
 
-	
+	// Создаем колоду и массив козырей
 
 	let cardsArray = [
 		{name: 'six',
@@ -132,10 +132,15 @@
 	for (var i = 0; i < 46; i++){
   		randomArray.push(i);
 	}
+
+
+	// Мешем колоду и выбираем козырь
+
+
 	shuffle(cardsArray);
 	shuffle(trumpArray);
 	let trump = trumpArray[0].value;
-	console.log(trump);
+	
 	
 	function shuffle(arr){
 		let currentIndex = arr.length,
@@ -154,7 +159,7 @@
 		return arr;
 	}
 
-
+		//  Раздаем карты
 	let handOfPeter = [],
 		handOfVacili = [];
 
@@ -164,15 +169,21 @@
 		for(let i = cardsArray.length / 2, k = 0; i < cardsArray.length; i++, k++){
 			handOfVacili[k] = cardsArray[i];
 		}
-		console.log(handOfVacili);
-		console.log(handOfPeter);
+		
 
 		let PeterScore = 0,
 			VaciliScore = 0,
 			PeterHandValue = 0,
 			VaciliHandValue = 0,
 			PeterCardName,
-			VaciliCardName;
+			VaciliCardName,
+			winPlayer,
+			test = true;
+
+
+			// Играем по одному ходу, расчет победителя
+
+
 		function* whoIsWinner(){
 
 			for(let i = 0; i < handOfPeter.length; i++){
@@ -188,53 +199,54 @@
 				VaciliHandValue += handOfVacili[i].value;
 				PeterCardName = handOfPeter[i].name +'--'+ handOfPeter[i].suit;
 				VaciliCardName = handOfVacili[i].name + '--' + handOfVacili[i].suit;
-				console.log(PeterHandValue+ "----"+VaciliHandValue);
+				
 			if(PeterHandValue > VaciliHandValue){
-				console.log(PeterScore + ":" + VaciliScore);
+				
 				yield PeterScore++;
 			}else if(PeterHandValue < VaciliHandValue){
-				console.log(PeterScore + ":" + VaciliScore);
+				
 				yield VaciliScore++;
 			}
 		}
-
+		if(PeterScore > VaciliScore){
+			winPlayer = 'Peter';
+		}else if(PeterScore < VaciliScore){
+			winPlayer = 'Vacili';
+		}else if(PeterScore === VaciliScore){
+			winPlayer = 'unknown';
+		}
 		console.log(PeterScore + ":" + VaciliScore);
 
 	};
+
+		// Игра начинается по клику на окно браузера
+
+
 		let getWinner = whoIsWinner();
-		
-  		
-  		
-		
+
 		window.addEventListener("click", addToBrowser);
 		function addToBrowser() { 
-			
+			if(test === true){
+				getWinner.next();
+				test = false;
+			}
 			document.body.children[0].textContent = 'Suit --' + trump+'   '+ 'Winner --' + 'Peter ' + PeterScore +  ":" + ' Vacili '+ VaciliScore;
-			
-			
-
-
-			
 			let tbody = document.getElementById('myTable').getElementsByTagName("TBODY")[0];
     		let row = document.createElement("TR");
     		let td1 = document.createElement("TD");
     		td1.appendChild(document.createTextNode(PeterCardName));
     		let td2 = document.createElement("TD");
     		td2.appendChild (document.createTextNode(VaciliCardName));
+    		row.appendChild(td1);
+    		row.appendChild(td2);
+    		tbody.appendChild(row);
 
 
     		if(getWinner.next().done){
 			window.removeEventListener("click", addToBrowser);
+			document.body.children[0].textContent = 'Suit --' + trump+'   '+ 'Winner --' + winPlayer + '(Peter ' + PeterScore +  ":" + ' Vacili '+ VaciliScore + ')';
 			};
-
-
-    		row.appendChild(td1);
-    		row.appendChild(td2);
-    		tbody.appendChild(row);
     		
-    		
-
-
 		}
 
 		
